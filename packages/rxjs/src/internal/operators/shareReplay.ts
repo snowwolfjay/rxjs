@@ -1,6 +1,7 @@
 import { ReplaySubject } from '../ReplaySubject.js';
 import type { MonoTypeOperatorFunction, SchedulerLike } from '../types.js';
 import { share } from './share.js';
+import { DefaultValues } from '../../DefaultValues'
 
 export interface ShareReplayConfig {
   bufferSize?: number;
@@ -159,9 +160,9 @@ export function shareReplay<T>(
   let bufferSize: number;
   let refCount = false;
   if (configOrBufferSize && typeof configOrBufferSize === 'object') {
-    ({ bufferSize = Infinity, windowTime = Infinity, refCount = false, scheduler } = configOrBufferSize);
+    ({ bufferSize = DefaultValues.bufferSize, windowTime =  DefaultValues.windowTime, refCount = DefaultValues.refCount, scheduler } = configOrBufferSize);
   } else {
-    bufferSize = (configOrBufferSize ?? Infinity) as number;
+    bufferSize = (configOrBufferSize ?? DefaultValues.bufferSize) as number;
   }
   return share<T>({
     connector: () => new ReplaySubject(bufferSize, windowTime, scheduler),
