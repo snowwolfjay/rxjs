@@ -159,10 +159,11 @@ export function shareReplay<T>(
 ): MonoTypeOperatorFunction<T> {
   let bufferSize: number;
   let refCount = false;
+  const {shareReplay: defaultConfig} = DefaultValues
   if (configOrBufferSize && typeof configOrBufferSize === 'object') {
-    ({ bufferSize = DefaultValues.bufferSize, windowTime =  DefaultValues.windowTime, refCount = DefaultValues.refCount, scheduler } = configOrBufferSize);
+    ({ bufferSize = defaultConfig.bufferSize, windowTime =  defaultConfig.windowTime, refCount = defaultConfig.refCount, scheduler } = configOrBufferSize);
   } else {
-    bufferSize = (configOrBufferSize ?? DefaultValues.bufferSize) as number;
+    bufferSize = (configOrBufferSize ?? defaultConfig.bufferSize) as number;
   }
   return share<T>({
     connector: () => new ReplaySubject(bufferSize, windowTime, scheduler),
